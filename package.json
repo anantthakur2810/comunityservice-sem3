@@ -1,0 +1,16 @@
+{
+  "name": "dps-ngo-platform",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Digital Community Engagement and Volunteer Support Platform for DPS Shiksha Samiti NGO",
+  "scripts": {
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "dev": "concurrently -n server,client -c green,cyan \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build": "npm run build --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

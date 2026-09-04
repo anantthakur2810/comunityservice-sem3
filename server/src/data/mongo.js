@@ -1,0 +1,93 @@
+import Requirement from '../models/Requirement.js';
+import Activity from '../models/Activity.js';
+import Volunteer from '../models/Volunteer.js';
+import Enquiry from '../models/Enquiry.js';
+
+const serialize = (doc) =>
+  doc.toObject({
+    versionKey: false,
+    transform: (_doc, ret) => {
+      ret.id = ret._id.toString();
+      delete ret._id;
+      return ret;
+    },
+  });
+
+/**
+ * MongoDB-backed data store. Implements the same interface as ./memory.js so
+ * the API layer never needs to know which backend is active.
+ */
+export default function createMongoStore() {
+  return {
+    /* ------------------------------ requirements ----------------------------- */
+    async listRequirements() {
+      return (await Requirement.find().sort({ createdAt: -1 })).map(serialize);
+    },
+    async createRequirement(data) {
+      return serialize(await Requirement.create(data));
+    },
+    async updateRequirement(id, patch) {
+      const doc = await Requirement.findByIdAndUpdate(id, patch, { new: true });
+      return doc ? serialize(doc) : null;
+    },
+    async removeRequirement(id) {
+      const doc = await Requirement.findByIdAndDelete(id);
+      return Boolean(doc);
+    },
+
+    /* ------------------------------- activities ------------------------------ */
+    async listActivities() {
+      return (await Activity.find().sort({ createdAt: -1 })).map(serialize);
+    },
+    async createActivity(data) {
+      return serialize(await Activity.create(data));
+    },
+    async updateActivity(id, patch) {
+      const doc = await Activity.findByIdAndUpdate(id, patch, { new: true });
+      return doc ? serialize(doc) : null;
+    },
+    async removeActivity(id) {
+      const doc = await Activity.findByIdAndDelete(id);
+      return Boolean(doc);
+    },
+
+    /* ------------------------------- volunteers ------------------------------ */
+    async listVolunteers() {
+      return (await Volunteer.find().sort({ createdAt: -1 })).map(serialize);
+    },
+    async createVolunteer(data) {
+      return serialize(await Volunteer.create(data));
+    },
+    async removeVolunteer(id) {
+      const doc = await Volunteer.findByIdAndDelete(id);
+      return Boolean(doc);
+    },
+
+    /* --------------------------------- stats -------------------------------- */
+    async stats() {
+      const [volunteers, requirements, activities, enquiries] = await Promise.all([
+        Volunteer.countDocuments(),
+        Requirement.countDocuments(),
+        Activity.countDocuments(),
+        Enquiry.countDocuments(),
+      ]);
+      return { volunteers, requirements, activities, enquiries };
+    },
+
+    /* -------------------------------- enquiries ------------------------------ */
+    async listEnquiries() {
+      return (await Enquiry.find().sort({ createdAt: -1 })).map(serialize);
+    },
+    async createEnquiry(data) {
+      return serialize(await Enquiry.create(data));
+    },
+    async updateEnquiry(id, patch) {
+      const doc = await Enquiry.findByIdAndUpdate(id, patch, { new: true });
+      return doc ? serialize(doc) : null;
+    },
+    async removeEnquiry(id) {
+      const doc = await Enquiry.findByIdAndDelete(id);
+      return Boolean(doc);
+    },
+  };
+}

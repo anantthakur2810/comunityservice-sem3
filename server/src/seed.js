@@ -11,12 +11,6 @@ if (!connected) {
   process.exit(1);
 }
 
-await Requirement.deleteMany({});
-await Activity.deleteMany({});
-await Requirement.insertMany(seedRequirements);
-await Activity.insertMany(seedActivities);
-console.log('✅ Seeded requirements and activities');
-
 // Pull the NGO's latest YouTube videos into the posts collection.
 try {
   const added = await syncChannelVideos(data(), process.env.YOUTUBE_CHANNEL_ID || DEFAULT_CHANNEL_ID);

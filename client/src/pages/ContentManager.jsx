@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 /**
- * Generic admin manager for a list of content items (requirements / activities).
+ * Generic admin manager for a list of content items (requirements).
  * Props: fields (config), items, load, create, update, remove, emptyText.
  */
 export default function ContentManager({ fields, items, onCreate, onUpdate, onRemove, emptyText }) {

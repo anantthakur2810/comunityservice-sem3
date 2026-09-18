@@ -149,11 +149,6 @@ export default function Home() {
             Icon={IconBookOpen}
           />
           <Stat
-            label="Activities & events"
-            value={stats?.activities ?? 0}
-            Icon={IconSparkles}
-          />
-          <Stat
             label="Community supporters"
             value={(stats?.volunteers ?? 0) + (stats?.enquiries ?? 0)}
             Icon={IconHeart}

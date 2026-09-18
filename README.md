@@ -5,7 +5,7 @@ A full-stack **Digital Community Engagement and Volunteer Support Platform** for
 Sadarpur, Sector 45, Noida working for education, health and women empowerment.
 
 Built to satisfy the project problem statement: a centralized platform that communicates the
-organisation's activities, requirements, contact information, and opportunities for community
+organisation's work, requirements, contact information, and opportunities for community
 participation — with volunteer registration, donation/support enquiry forms, and an admin
 interface for the NGO to manage everything.
 
@@ -26,7 +26,7 @@ interface for the NGO to manage everything.
 │       └── components/      # Navbar, Footer, form fields, SocialFeed, gallery
 ├── server/                  # Express + Mongoose API
 │   └── src/
-│       ├── models/          # Volunteer, Enquiry, Requirement, Activity, Post
+│       ├── models/          # Volunteer, Enquiry, Requirement, Post
 │       ├── routes/          # public, volunteers, enquiries, admin, posts, cron
 │       ├── services/posts.js# YouTube/Instagram URL parsing + channel sync
 │       ├── data/            # mongo store + in-memory demo store (same interface)
@@ -56,8 +56,8 @@ restart). For anything real, set `MONGODB_URI` in `server/.env` (local) or the V
 environment variables (production). A free MongoDB Atlas cluster works; the connection is
 verified at `GET /api/health` (`db: connected` vs `demo`).
 
-Starter content is **not** seeded automatically. Create real requirements and activities in the
-admin panel, or run `npm run seed --prefix server` to insert the old sample content manually.
+Starter content is **not** seeded automatically. Create real requirements in the
+admin panel, or run `npm run seed --prefix server` to sync the YouTube channel manually.
 
 ## Admin Panel
 
@@ -69,7 +69,6 @@ The admin panel lets the NGO:
 - View and update the status of donation/support enquiries (new → contacted → resolved)
 - View and delete volunteer registrations
 - Add / edit / delete current requirements (shown on the homepage)
-- Add / edit / delete activities (shown on the homepage)
 - **Posts** — paste a YouTube video/short or Instagram reel/post URL, see a live preview, and
   publish it to the homepage "Reels & Posts" section. One click syncs the NGO's YouTube channel.
 
@@ -101,8 +100,7 @@ Public:
 | ------ | ------------------- | ---------------------------------- |
 | GET    | `/api/health`       | Health check — `db: connected`/`demo` plus whether `MONGODB_URI` is set and why the last connection failed |
 | GET    | `/api/requirements` | Current requirements               |
-| GET    | `/api/activities`   | Recent activities                  |
-| GET    | `/api/stats`        | Live counts (volunteers, needs, activities, supporters) |
+| GET    | `/api/stats`        | Live counts (volunteers, needs, supporters) |
 | GET    | `/api/posts`        | Latest social posts (YouTube/Instagram) |
 | POST   | `/api/volunteers`   | Register as a volunteer            |
 | POST   | `/api/enquiries`    | Submit donation/support enquiry    |
@@ -119,8 +117,6 @@ Admin (all require `Authorization: Bearer <token>` from `POST /api/admin/login`)
 | DELETE | `/api/admin/enquiries/:id`        | Delete an enquiry              |
 | GET/POST | `/api/admin/requirements`       | List / create requirements     |
 | PATCH/DELETE | `/api/admin/requirements/:id` | Update / delete a requirement  |
-| GET/POST | `/api/admin/activities`        | List / create activities       |
-| PATCH/DELETE | `/api/admin/activities/:id`   | Update / delete an activity    |
 | GET    | `/api/admin/posts`                | List all posts                 |
 | POST   | `/api/admin/posts/preview`        | Preview a post URL before saving |
 | POST   | `/api/admin/posts`                | Publish a post from a URL      |

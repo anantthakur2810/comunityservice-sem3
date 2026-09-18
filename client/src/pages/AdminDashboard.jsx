@@ -10,12 +10,6 @@ const requirementFields = [
   { key: 'category', label: 'Category' },
 ];
 
-const activityFields = [
-  { key: 'title', label: 'Title *', required: true },
-  { key: 'description', label: 'Description', textarea: true },
-  { key: 'date', label: 'Date' },
-];
-
 const enquiryStatus = ['new', 'contacted', 'resolved'];
 
 function formatDate(iso) {
@@ -34,7 +28,6 @@ export default function AdminDashboard() {
   const [volunteers, setVolunteers] = useState([]);
   const [enquiries, setEnquiries] = useState([]);
   const [requirements, setRequirements] = useState([]);
-  const [activities, setActivities] = useState([]);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState('');
 
@@ -49,16 +42,14 @@ export default function AdminDashboard() {
   const load = useCallback(async () => {
     setError('');
     try {
-      const [v, e, r, a] = await Promise.all([
+      const [v, e, r] = await Promise.all([
         admin.volunteers(),
         admin.enquiries(),
         admin.requirements(),
-        admin.activities(),
       ]);
       setVolunteers(v.volunteers || []);
       setEnquiries(e.enquiries || []);
       setRequirements(r.requirements || []);
-      setActivities(a.activities || []);
     } catch (err) {
       failIfUnauthorized(err);
     }
@@ -110,20 +101,10 @@ export default function AdminDashboard() {
       failIfUnauthorized(err);
     }
   };
-  const refreshActivities = async () => {
-    try {
-      const { activities: a } = await admin.activities();
-      setActivities(a);
-    } catch (err) {
-      failIfUnauthorized(err);
-    }
-  };
-
   const tabs = [
     { id: 'enquiries', label: `Support Enquiries${enquiries.length ? ` (${enquiries.length})` : ''}` },
     { id: 'volunteers', label: `Volunteers${volunteers.length ? ` (${volunteers.length})` : ''}` },
     { id: 'requirements', label: 'Requirements' },
-    { id: 'activities', label: 'Activities' },
     { id: 'posts', label: `Posts${posts.length ? ` (${posts.length})` : ''}` },
   ];
 
@@ -287,26 +268,6 @@ export default function AdminDashboard() {
                 setRequirements((list) => list.filter((r) => r.id !== id));
               }}
               emptyText="No requirements listed yet. Add the first one!"
-            />
-          )}
-
-          {tab === 'activities' && (
-            <ContentManager
-              fields={activityFields}
-              items={activities}
-              onCreate={async (form) => {
-                await admin.createActivity(form);
-                await refreshActivities();
-              }}
-              onUpdate={async (id, form) => {
-                await admin.updateActivity(id, form);
-                await refreshActivities();
-              }}
-              onRemove={async (id) => {
-                await admin.deleteActivity(id);
-                setActivities((list) => list.filter((a) => a.id !== id));
-              }}
-              emptyText="No activities listed yet. Add the first one!"
             />
           )}
         </div>

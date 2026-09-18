@@ -18,23 +18,3 @@ export const seedRequirements = [
     category: 'Support',
   },
 ];
-
-export const seedActivities = [
-  {
-    title: 'Free evening classes',
-    description:
-      'Daily evening tuition classes for underprivileged children at our Sadarpur centre.',
-    date: 'Ongoing',
-  },
-  {
-    title: 'Independence Day celebration',
-    description:
-      'Distributed notebooks and sweets to the children and celebrated the day with the community.',
-    date: '15 August 2026',
-  },
-  {
-    title: 'Health awareness session',
-    description: 'Session on nutrition and hygiene for mothers in the community.',
-    date: 'July 2026',
-  },
-];

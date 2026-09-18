@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 const objectives = [
-  'Provide clear and accessible information about DPS Shiksha Samiti, its activities, objectives and current requirements.',
+  'Provide clear and accessible information about DPS Shiksha Samiti, its work, objectives and current requirements.',
   'Offer an easy-to-use volunteer registration system for individuals interested in contributing their time and skills.',
   'Provide a structured form for donation and support enquiries based on the organisation\u2019s current needs.',
   'Improve communication between the NGO and potential volunteers, donors and community supporters.',

@@ -1,5 +1,4 @@
 import Requirement from '../models/Requirement.js';
-import Activity from '../models/Activity.js';
 import Volunteer from '../models/Volunteer.js';
 import Enquiry from '../models/Enquiry.js';
 import Post from '../models/Post.js';
@@ -36,22 +35,6 @@ export default function createMongoStore() {
       return Boolean(doc);
     },
 
-    /* ------------------------------- activities ------------------------------ */
-    async listActivities() {
-      return (await Activity.find().sort({ createdAt: -1 })).map(serialize);
-    },
-    async createActivity(data) {
-      return serialize(await Activity.create(data));
-    },
-    async updateActivity(id, patch) {
-      const doc = await Activity.findByIdAndUpdate(id, patch, { new: true });
-      return doc ? serialize(doc) : null;
-    },
-    async removeActivity(id) {
-      const doc = await Activity.findByIdAndDelete(id);
-      return Boolean(doc);
-    },
-
     /* ------------------------------- volunteers ------------------------------ */
     async listVolunteers() {
       return (await Volunteer.find().sort({ createdAt: -1 })).map(serialize);
@@ -66,13 +49,12 @@ export default function createMongoStore() {
 
     /* --------------------------------- stats -------------------------------- */
     async stats() {
-      const [volunteers, requirements, activities, enquiries] = await Promise.all([
+      const [volunteers, requirements, enquiries] = await Promise.all([
         Volunteer.countDocuments(),
         Requirement.countDocuments(),
-        Activity.countDocuments(),
         Enquiry.countDocuments(),
       ]);
-      return { volunteers, requirements, activities, enquiries };
+      return { volunteers, requirements, enquiries };
     },
 
     /* -------------------------------- enquiries ------------------------------ */

@@ -13,7 +13,6 @@ export default function createMemoryStore() {
   // Starts EMPTY — demo content is never auto-inserted. The NGO manages real
   // content through the admin panel, exactly like the MongoDB store.
   const requirements = [];
-  const activities = [];
   const volunteers = [];
   const enquiries = [];
   const posts = [];
@@ -43,28 +42,6 @@ export default function createMemoryStore() {
       return true;
     },
 
-    /* ------------------------------- activities ------------------------------ */
-    async listActivities() {
-      return [...activities].reverse();
-    },
-    async createActivity(data) {
-      const item = { id: randomUUID(), ...data, createdAt: stamp(), updatedAt: stamp() };
-      activities.push(item);
-      return item;
-    },
-    async updateActivity(id, patch) {
-      const i = findById(activities, id);
-      if (i === -1) return null;
-      activities[i] = { ...activities[i], ...patch, updatedAt: stamp() };
-      return activities[i];
-    },
-    async removeActivity(id) {
-      const i = findById(activities, id);
-      if (i === -1) return false;
-      activities.splice(i, 1);
-      return true;
-    },
-
     /* ------------------------------- volunteers ------------------------------ */
     async listVolunteers() {
       return [...volunteers].reverse();
@@ -86,7 +63,6 @@ export default function createMemoryStore() {
       return {
         volunteers: volunteers.length,
         requirements: requirements.length,
-        activities: activities.length,
         enquiries: enquiries.length,
       };
     },

@@ -11,14 +11,6 @@ router.get('/requirements', async (_req, res, next) => {
   }
 });
 
-router.get('/activities', async (_req, res, next) => {
-  try {
-    res.json({ activities: await data().listActivities() });
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.get('/stats', async (_req, res, next) => {
   try {
     res.json({ stats: await data().stats() });

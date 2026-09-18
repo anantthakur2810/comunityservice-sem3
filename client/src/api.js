@@ -29,7 +29,6 @@ async function request(path, options = {}) {
 
 /* ------------------------------- public API ------------------------------- */
 export const getRequirements = () => request('/requirements');
-export const getActivities = () => request('/activities');
 export const getStats = () => request('/stats');
 export const getPosts = (limit = 24) => request(`/posts?limit=${limit}`);
 export const submitVolunteer = (payload) =>
@@ -57,12 +56,6 @@ export const admin = {
     request(`/admin/requirements/${id}`, { method: 'PATCH', body: JSON.stringify(patch) }),
   deleteRequirement: (id) => request(`/admin/requirements/${id}`, { method: 'DELETE' }),
 
-  activities: () => request('/admin/activities'),
-  createActivity: (payload) =>
-    request('/admin/activities', { method: 'POST', body: JSON.stringify(payload) }),
-  updateActivity: (id, patch) =>
-    request(`/admin/activities/${id}`, { method: 'PATCH', body: JSON.stringify(patch) }),
-  deleteActivity: (id) => request(`/admin/activities/${id}`, { method: 'DELETE' }),
 
   posts: (limit = 50) => request(`/admin/posts?limit=${limit}`),
   previewPost: (url) =>

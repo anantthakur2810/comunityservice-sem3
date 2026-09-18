@@ -80,7 +80,7 @@ Public:
 
 | Method | Endpoint            | Description                        |
 | ------ | ------------------- | ---------------------------------- |
-| GET    | `/api/health`       | Health check (`db: connected`/`demo`) |
+| GET    | `/api/health`       | Health check — `db: connected`/`demo` plus whether `MONGODB_URI` is set and why the last connection failed |
 | GET    | `/api/requirements` | Current requirements               |
 | GET    | `/api/activities`   | Recent activities                  |
 | GET    | `/api/stats`        | Live counts (volunteers, needs, activities, supporters) |

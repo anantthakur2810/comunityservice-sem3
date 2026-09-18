@@ -1,4 +1,4 @@
-import { connectDB } from './config/db.js';
+import { connectDB, noteDbError } from './config/db.js';
 import Requirement from './models/Requirement.js';
 import Activity from './models/Activity.js';
 import { seedRequirements, seedActivities } from './seed-data.js';
@@ -24,6 +24,15 @@ async function autoSeed() {
  */
 export async function bootstrapData() {
   const connected = await connectDB();
-  if (connected) await autoSeed();
-  return connected;
+  if (!connected) return false;
+
+  // A seeding failure still leaves us on MongoDB — it just leaves the
+  // collections empty, so report it rather than pretending the DB is down.
+  try {
+    await autoSeed();
+  } catch (err) {
+    noteDbError(err);
+    console.warn(`⚠️  Connected to MongoDB but could not seed starter content (${err.message})`);
+  }
+  return true;
 }

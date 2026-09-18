@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { dbMode } from './data/index.js';
+import { dbDiagnostics } from './config/db.js';
 import publicRoutes from './routes/public.js';
 import volunteerRoutes from './routes/volunteers.js';
 import enquiryRoutes from './routes/enquiries.js';
@@ -13,7 +14,7 @@ export function createApp() {
   app.use(express.json());
 
   app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', db: dbMode() });
+    res.json({ status: 'ok', db: dbMode(), database: dbDiagnostics() });
   });
 
   app.use('/api', publicRoutes);

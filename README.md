@@ -114,6 +114,33 @@ Admin (all require `Authorization: Bearer <token>` from `POST /api/admin/login`)
   NGO logo (`client/public/logo.jpg`, pulled from their X profile — swap in
   an official logo file anytime, same filename)
 
+## Deploying to Vercel
+
+The repo deploys as a **single Vercel project**: the Vite client is built to static files, and the
+Express API runs as one serverless function (`api/server.js`) mounted at `/api/*`.
+
+`vercel.json` wires this up:
+
+- `installCommand` — installs the `server/` and `client/` dependencies
+- `buildCommand` — `npm run build --prefix client`
+- `outputDirectory` — `client/dist`
+- rewrites — `/api/(.*)` → the serverless function; everything else → `/index.html` (SPA routing)
+
+**Environment variables** (Vercel → Project → Settings → Environment Variables):
+
+| Variable | Why |
+| --- | --- |
+| `MONGODB_URI` | **Set this.** Serverless instances are ephemeral, so the in-memory demo store isn't shared between them and resets constantly. A free MongoDB Atlas cluster is enough. |
+| `ADMIN_PASSWORD` | Replaces the default `admin123` admin password. |
+| `ADMIN_SECRET` | Salts the stateless admin token — change it from the default. |
+
+Without `MONGODB_URI` the API still responds, but the admin panel will appear to lose data between
+requests. The admin token is a stateless hash (`sha256(password + secret)`), so it keeps working
+across serverless instances as long as `ADMIN_PASSWORD` and `ADMIN_SECRET` stay stable.
+
+If a deployment 404s on `/api/*` (typically on admin login), the serverless function wasn't picked
+up: confirm `api/server.js` is committed and the `/api/(.*)` rewrite is present in `vercel.json`.
+
 ## Notes
 
 - The problem statement alternates between "DPG School" and "DPS Shiksha Samiti NGO" — this

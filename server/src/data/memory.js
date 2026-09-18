@@ -1,5 +1,4 @@
 import { randomUUID } from 'node:crypto';
-import { seedRequirements, seedActivities } from '../seed-data.js';
 
 function stamp() {
   return new Date().toISOString();
@@ -11,18 +10,10 @@ function stamp() {
  * API layer never needs to know which backend is active.
  */
 export default function createMemoryStore() {
-  const requirements = seedRequirements.map((r) => ({
-    id: randomUUID(),
-    ...r,
-    createdAt: stamp(),
-    updatedAt: stamp(),
-  }));
-  const activities = seedActivities.map((a) => ({
-    id: randomUUID(),
-    ...a,
-    createdAt: stamp(),
-    updatedAt: stamp(),
-  }));
+  // Starts EMPTY — demo content is never auto-inserted. The NGO manages real
+  // content through the admin panel, exactly like the MongoDB store.
+  const requirements = [];
+  const activities = [];
   const volunteers = [];
   const enquiries = [];
   const posts = [];

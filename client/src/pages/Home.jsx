@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getRequirements, getActivities, getStats } from '../api.js';
+import { getRequirements, getStats } from '../api.js';
 import Reveal, { useInView, useCountUp } from '../components/Reveal.jsx';
 import SocialFeed from '../components/SocialFeed.jsx';
 import {
@@ -75,16 +75,14 @@ function SkeletonCards({ count = 3 }) {
 
 export default function Home() {
   const [requirements, setRequirements] = useState([]);
-  const [activities, setActivities] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
-    Promise.all([getRequirements(), getActivities(), getStats()])
-      .then(([reqRes, actRes, statsRes]) => {
+    Promise.all([getRequirements(), getStats()])
+      .then(([reqRes, statsRes]) => {
         setRequirements(reqRes.requirements || []);
-        setActivities(actRes.activities || []);
         setStats(statsRes.stats || null);
       })
       .catch((err) => setLoadError(err.message))
@@ -227,41 +225,6 @@ export default function Home() {
                       <p>{r.description}</p>
                     </div>
                     {r.category && <span className={`tag tag-${(r.category || '').toLowerCase()}`}>{r.category}</span>}
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ============================= ACTIVITIES ============================= */}
-      <section className="section">
-        <div className="container">
-          <Reveal>
-            <div className="section-head">
-              <h2 className="section-title">
-                Our Recent Activities <span className="title-dot">.</span>
-              </h2>
-              <Link to="/about" className="text-link">
-                About us <IconArrowRight size={16} />
-              </Link>
-            </div>
-          </Reveal>
-          {loadError ? (
-            <p className="empty-state">⚠️ {loadError}</p>
-          ) : loading ? (
-            <SkeletonCards />
-          ) : activities.length === 0 ? (
-            <p className="empty-state">No activities listed yet.</p>
-          ) : (
-            <div className="card-grid">
-              {activities.map((a, i) => (
-                <Reveal key={a.id} delay={i * 120}>
-                  <div className="card activity-card hover-lift">
-                    <span className="activity-date">{a.date}</span>
-                    <h3>{a.title}</h3>
-                    <p>{a.description}</p>
                   </div>
                 </Reveal>
               ))}

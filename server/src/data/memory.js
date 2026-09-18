@@ -25,6 +25,7 @@ export default function createMemoryStore() {
   }));
   const volunteers = [];
   const enquiries = [];
+  const posts = [];
 
   const findById = (list, id) => list.findIndex((item) => item.id === id);
 
@@ -124,6 +125,32 @@ export default function createMemoryStore() {
       const i = findById(enquiries, id);
       if (i === -1) return false;
       enquiries.splice(i, 1);
+      return true;
+    },
+
+    /* ---------------------------------- posts --------------------------------- */
+    async listPosts({ limit = 24 } = {}) {
+      return posts.slice(0, limit);
+    },
+
+    async createPost(data) {
+      const item = { id: randomUUID(), source: 'manual', ...data, createdAt: stamp(), updatedAt: stamp() };
+      posts.push(item);
+      return item;
+    },
+
+    async upsertAutoPost(data) {
+      const i = posts.findIndex((p) => p.source === 'auto' && p.externalId === data.externalId);
+      if (i !== -1) return null;
+      const item = { id: randomUUID(), source: 'auto', ...data, createdAt: stamp(), updatedAt: stamp() };
+      posts.push(item);
+      return item;
+    },
+
+    async removePost(id) {
+      const i = findById(posts, id);
+      if (i === -1) return false;
+      posts.splice(i, 1);
       return true;
     },
   };

@@ -1,9 +1,15 @@
-import { connectDB, noteDbError } from './config/db.js';
+import { connectDB } from './config/db.js';
 import Requirement from './models/Requirement.js';
 import Activity from './models/Activity.js';
 import { seedRequirements, seedActivities } from './seed-data.js';
 
-async function autoSeed() {
+/**
+ * Optional starter content. Auto-seeding is DISABLED — the NGO now manages all
+ * requirements and activities through the admin panel, and demo data would
+ * come back on every fresh database. Kept for the manual seed script:
+ *   npm run seed --prefix server
+ */
+export async function seedStarterContent() {
   const [reqCount, actCount] = await Promise.all([
     Requirement.countDocuments(),
     Activity.countDocuments(),
@@ -16,23 +22,12 @@ async function autoSeed() {
 }
 
 /**
- * Connects to MongoDB (when a URI is configured) and seeds the starter
- * requirements/activities if the collections are empty.
+ * Connects to MongoDB (when a URI is configured).
  *
  * Returns `true` when MongoDB is in use, `false` when the server is running in
- * DEMO mode on the in-memory store.
+ * DEMO mode on the in-memory store. Starter content is NOT seeded
+ * automatically — the NGO creates real content through the admin panel.
  */
 export async function bootstrapData() {
-  const connected = await connectDB();
-  if (!connected) return false;
-
-  // A seeding failure still leaves us on MongoDB — it just leaves the
-  // collections empty, so report it rather than pretending the DB is down.
-  try {
-    await autoSeed();
-  } catch (err) {
-    noteDbError(err);
-    console.warn(`⚠️  Connected to MongoDB but could not seed starter content (${err.message})`);
-  }
-  return true;
+  return connectDB();
 }

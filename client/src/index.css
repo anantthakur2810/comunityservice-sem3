@@ -1365,6 +1365,124 @@ textarea.field-input {
   margin-top: 30px;
 }
 
+/* ============================ reels & posts =============================== */
+.post-tile {
+  cursor: default;
+}
+
+.post-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+
+.post-tile:hover .post-thumb img {
+  transform: scale(1.06);
+}
+
+.post-thumb-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(140deg, #123d24, #1f6b3a);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.post-tile iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  z-index: 3;
+}
+
+.post-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(12, 32, 20, 0.78);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.post-preview {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  margin: 4px 0 14px;
+}
+
+.post-preview img {
+  width: 120px;
+  height: 68px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.post-preview .post-thumb-fallback {
+  position: static;
+  width: 120px;
+  height: 68px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.post-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.post-row-thumb {
+  width: 96px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.post-row-thumb.post-thumb-fallback {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-success {
+  color: #1a7f37;
+  background: #e9f7ee;
+  border: 1px solid #bfe5cd;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+}
+
 /* ============================== responsive =============================== */
 @media (max-width: 960px) {
   .hero-inner {

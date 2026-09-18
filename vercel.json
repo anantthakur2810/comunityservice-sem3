@@ -4,6 +4,12 @@
   "installCommand": "npm install --prefix server && npm install --prefix client",
   "buildCommand": "npm run build --prefix client",
   "outputDirectory": "client/dist",
+  "crons": [
+    {
+      "path": "/api/cron/sync-posts",
+      "schedule": "0 2 * * *"
+    }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/server.js" },
     { "source": "/(.*)", "destination": "/index.html" }

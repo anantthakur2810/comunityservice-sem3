@@ -6,6 +6,8 @@ import publicRoutes from './routes/public.js';
 import volunteerRoutes from './routes/volunteers.js';
 import enquiryRoutes from './routes/enquiries.js';
 import adminRoutes from './routes/admin.js';
+import postRoutes from './routes/posts.js';
+import cronRoutes from './routes/cron.js';
 
 export function createApp() {
   const app = express();
@@ -21,6 +23,8 @@ export function createApp() {
   app.use('/api', volunteerRoutes);
   app.use('/api', enquiryRoutes);
   app.use('/api/admin', adminRoutes);
+  app.use('/api', postRoutes);
+  app.use('/api', cronRoutes);
 
   app.use((_req, res) => {
     res.status(404).json({ error: 'Not found' });

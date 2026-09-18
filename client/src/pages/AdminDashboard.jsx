@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { admin, getToken, setToken, clearToken } from '../api.js';
 import AdminLogin from './AdminLogin.jsx';
 import ContentManager from './ContentManager.jsx';
+import PostsManager from './PostsManager.jsx';
 
 const requirementFields = [
   { key: 'title', label: 'Title *', required: true },
@@ -34,6 +35,7 @@ export default function AdminDashboard() {
   const [enquiries, setEnquiries] = useState([]);
   const [requirements, setRequirements] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [error, setError] = useState('');
 
   const failIfUnauthorized = (err) => {
@@ -122,6 +124,7 @@ export default function AdminDashboard() {
     { id: 'volunteers', label: `Volunteers${volunteers.length ? ` (${volunteers.length})` : ''}` },
     { id: 'requirements', label: 'Requirements' },
     { id: 'activities', label: 'Activities' },
+    { id: 'posts', label: `Posts${posts.length ? ` (${posts.length})` : ''}` },
   ];
 
   return (
@@ -261,6 +264,10 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
+          )}
+
+          {tab === 'posts' && (
+            <PostsManager onChanged={setPosts} />
           )}
 
           {tab === 'requirements' && (

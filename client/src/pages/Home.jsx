@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { getRequirements, getActivities, getStats } from '../api.js';
 import Reveal, { useInView, useCountUp } from '../components/Reveal.jsx';
 import PhotoGallery from '../components/PhotoGallery.jsx';
+import SocialFeed from '../components/SocialFeed.jsx';
 import {
   IconGraduationCap,
   IconHeart,
@@ -271,6 +272,8 @@ export default function Home() {
       </section>
 
       {/* ======================== LIFE / PHOTO GALLERY ========================= */}
+      <SocialFeed />
+
       <PhotoGallery />
 
       {/* ================================= CTA ================================ */}

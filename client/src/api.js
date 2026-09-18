@@ -31,6 +31,7 @@ async function request(path, options = {}) {
 export const getRequirements = () => request('/requirements');
 export const getActivities = () => request('/activities');
 export const getStats = () => request('/stats');
+export const getPosts = (limit = 24) => request(`/posts?limit=${limit}`);
 export const submitVolunteer = (payload) =>
   request('/volunteers', { method: 'POST', body: JSON.stringify(payload) });
 export const submitEnquiry = (payload) =>
@@ -62,4 +63,22 @@ export const admin = {
   updateActivity: (id, patch) =>
     request(`/admin/activities/${id}`, { method: 'PATCH', body: JSON.stringify(patch) }),
   deleteActivity: (id) => request(`/admin/activities/${id}`, { method: 'DELETE' }),
+
+  posts: (limit = 50) => request(`/admin/posts?limit=${limit}`),
+  previewPost: (url) =>
+    request('/admin/posts/preview', { method: 'POST', body: JSON.stringify({ url }) }),
+  createPost: (url, caption = '') =>
+    request('/admin/posts', { method: 'POST', body: JSON.stringify({ url, caption }) }),
+  deletePost: (id) => request(`/admin/posts/${id}`, { method: 'DELETE' }),
+  syncPosts: () => request('/admin/posts/sync', { method: 'POST', body: '{}' }),
 };
+
+/* ------------------------- embed helpers (client) ------------------------- */
+
+/** YouTube embed URL for a video/short id. */
+export const youtubeEmbedUrl = (videoId) =>
+  `https://www.youtube.com/embed/${videoId}?rel=0&playsinline=1`;
+
+/** Instagram embed URL for a reel/post shortcode. */
+export const instagramEmbedUrl = (shortcode) =>
+  `https://www.instagram.com/p/${shortcode}/embed`;

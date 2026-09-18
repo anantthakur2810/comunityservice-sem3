@@ -2,6 +2,7 @@ import Requirement from '../models/Requirement.js';
 import Activity from '../models/Activity.js';
 import Volunteer from '../models/Volunteer.js';
 import Enquiry from '../models/Enquiry.js';
+import Post from '../models/Post.js';
 
 const serialize = (doc) =>
   doc.toObject({
@@ -87,6 +88,31 @@ export default function createMongoStore() {
     },
     async removeEnquiry(id) {
       const doc = await Enquiry.findByIdAndDelete(id);
+      return Boolean(doc);
+    },
+
+    /* ---------------------------------- posts --------------------------------- */
+    async listPosts({ limit = 24 } = {}) {
+      return (await Post.find().sort({ publishedAt: -1, createdAt: -1 }).limit(limit)).map(serialize);
+    },
+
+    async createPost(data) {
+      return serialize(await Post.create(data));
+    },
+
+    /** Insert-only: returns the doc for a new video, or null when it exists. */
+    async upsertAutoPost(data) {
+      const doc = await Post.findOneAndUpdate(
+        { source: 'auto', externalId: data.externalId },
+        { $setOnInsert: { ...data, source: 'auto' } },
+        { new: true, upsert: true }
+      );
+      // Distinguish "was inserted" from "already existed" (duplicate-key race).
+      return doc.createdAt.getTime() === doc.updatedAt.getTime() ? serialize(doc) : null;
+    },
+
+    async removePost(id) {
+      const doc = await Post.findByIdAndDelete(id);
       return Boolean(doc);
     },
   };

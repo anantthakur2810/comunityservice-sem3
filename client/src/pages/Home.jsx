@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getRequirements, getActivities, getStats } from '../api.js';
 import Reveal, { useInView, useCountUp } from '../components/Reveal.jsx';
-import PhotoGallery from '../components/PhotoGallery.jsx';
 import SocialFeed from '../components/SocialFeed.jsx';
 import {
   IconGraduationCap,
@@ -271,10 +270,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ======================== LIFE / PHOTO GALLERY ========================= */}
+      {/* ====================== REELS & POSTS (live feed) ====================== */}
       <SocialFeed />
-
-      <PhotoGallery />
 
       {/* ================================= CTA ================================ */}
       <section className="cta">
